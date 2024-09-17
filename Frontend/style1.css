@@ -1,0 +1,150 @@
+/* General Styles */
+body {
+   font-family: Arial, sans-serif;
+   margin: 0;
+   padding: 0;
+   background-color: #f4f4f4;
+}
+
+.container {
+   display: flex;
+   flex-direction: row;
+   height: 100vh;
+   justify-content: space-between;
+}
+
+/* Header */
+.header {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 15px;
+   background-color: white;
+   border-bottom: 1px solid #ccc;
+}
+
+.logo img {
+   width: 50px;
+   height: auto;
+}
+
+.profile {
+   font-weight: bold;
+}
+
+/* Main Content */
+.main-content {
+   flex: 1;
+   padding: 20px;
+   background-color: #fff;
+}
+
+.description-section {
+   margin-bottom: 20px;
+}
+
+.description-section h4 {
+   font-size: 18px;
+   font-weight: 600;
+   margin-bottom: 10px;
+}
+
+.try-another-btn {
+   background-color: #27253B;
+   color: white;
+   padding: 8px 12px;
+   border: none;
+   cursor: pointer;
+   border-radius: 4px;
+}
+
+.prediction-section {
+   margin-bottom: 30px;
+}
+
+.prediction-section h1 {
+   font-size: 36px;
+   font-weight: bold;
+   margin-bottom: 10px;
+}
+
+.confidence {
+   color: #37D67A;
+   font-weight: bold;
+   font-size: 18px;
+}
+
+/* Additional Results */
+.additional-results {
+   margin-bottom: 20px;
+}
+
+.additional-results table {
+   width: 100%;
+   border-collapse: collapse;
+   margin-top: 10px;
+}
+
+.additional-results table th, 
+.additional-results table td {
+   padding: 12px;
+   text-align: left;
+}
+
+.additional-results table th {
+   background-color: #f5f5f5;
+}
+
+.additional-results table tr:nth-child(even) {
+   background-color: #f9f9f9;
+}
+
+.additional-results table td {
+   background-color: #f1f1f1;
+}
+
+/* HS Breakdown */
+.hs-breakdown {
+   display: flex;
+   justify-content: space-between;
+   background-color: #f5f5f5;
+   padding: 15px;
+   border-top: 1px solid #ccc;
+   border-bottom: 1px solid #ccc;
+}
+
+.hs-breakdown div {
+   flex: 1;
+   text-align: center;
+}
+
+.hs-breakdown p {
+   margin: 5px 0;
+   font-weight: 600;
+}
+
+/* Metrics Section */
+.metrics-section {
+   width: 250px;
+   background-color: #fff;
+   color: white;
+   padding: 20px;
+   border-left: 1px solid #ccc;
+}
+
+.metrics-section h4 {
+   font-size: 18px;
+   font-weight: bold;
+   margin-bottom: 20px;
+}
+
+.metrics-section p {
+   font-size: 16px;
+   margin-bottom: 10px;
+   font-weight: bold;
+   background-color: #e0e7ff;
+   padding: 10px;
+   border-radius: 4px;
+   text-align: center;
+   color: #27253B;
+}

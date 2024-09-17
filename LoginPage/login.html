@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="main-container">
+        <div class="image-container">
+            <img src="/LoginPage/LHS.jpg" alt="Company Logo">
+        </div>
+        <div class="form-container">
+            <div id="header">
+                <h1>Log In</h1>
+                <p>Enter details to proceed</p>
+            </div>
+            <form onsubmit="login(); return false;">
+                <div class="input-wrapper">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+                <div class="input-wrapper">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+                <label>
+                    <input type="checkbox" id="terms" required>
+                    Agree to <a href="https://example.com/terms-and-privacy-policy" target="_blank" rel="noopener noreferrer">Terms And Privacy Policy</a>
+                </label>
+                <input type="submit" value="Login">
+                <p id="message"></p>
+                <p><a href="index.html">Don't have an account? Sign up here</a></p>
+            </form>
+        </div>
+    </div>
+    <script>
+        function login() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                document.querySelector("#message").innerHTML = "Please fill in both email and password.";
+                return;
+            }
+            
+            // Regex for basic email validation
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.querySelector("#message").innerHTML = "Please enter a valid email address.";
+                return;
+            }
+
+            axios.post('http://localhost:3000/login', { email, password })
+                .then(function (response) {
+                    console.log(response.data);
+                    document.querySelector("#message").innerHTML = response.data.message;
+                    if (response.data.redirectUrl) {
+                        window.location.href = response.data.redirectUrl;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                    document.querySelector("#message").innerHTML = error.response.data.message;
+                });
+        }
+    </script>
+</body>
+</html>

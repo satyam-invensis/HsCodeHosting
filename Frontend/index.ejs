@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        /* Add your CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Results for: <%= userInput %></h1>
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } else { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter</th>
+                    <th>Heading</th>
+                    <th>Subheading</th>
+                    <th>Tarif</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% results.forEach(result => { %>
+                    <tr>
+                        <td><%= result.chapter %></td>
+                        <td><%= result.heading %></td>
+                        <td><%= result.subheading %></td>
+                        <td><%= result.tarif %></td>
+                        <td><%= result.description %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } %>
+    <a href="/">Go Back</a>
+</body>
+</html>

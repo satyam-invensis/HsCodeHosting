@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HS Code Prediction</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            width: 90%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            border-bottom: 1px solid #ccc;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 30px;
+            color: #27253B;
+        }
+
+        .profile {
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            justify-content: space-between;
+            margin-top: 60px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .description-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .description-section h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .description-text {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .try-another-btn {
+            background-color: #27253B;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .try-another-btn:hover {
+            background-color: #1a1a2e;
+        }
+
+        .prediction-section {
+            margin-bottom: 30px;
+        }
+
+        .prediction-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .hs-code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27253B;
+        }
+
+        .confidence {
+            color: #37D67A;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .confidence-bar-inner {
+            height: 20px;
+            background-color: #37D67A;
+            width: 70%; /* Default width, will be updated dynamically */
+            transition: width 0.3s ease;
+        }
+
+        .confidence-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .additional-results {
+            margin-bottom: 20px;
+        }
+
+        .additional-results table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .additional-results table th, 
+        .additional-results table td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .additional-results table th {
+            background-color: #f5f5f5;
+        }
+
+        .additional-results table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .additional-results table td {
+            background-color: #f1f1f1;
+        }
+
+        .hs-breakdown {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 30px;
+        }
+
+        .hs-breakdown div {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hs-breakdown p {
+            margin: 5px 0;
+            font-weight: 600;
+        }
+
+        .metrics-section {
+            width: 250px;
+            background-color: #fff;
+            padding: 20px;
+            border-left: 1px solid #ccc;
+        }
+
+        .metrics-section h4 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .metrics-section p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: bold;
+            background-color: blue;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="#" class="item icon-first">
+            <i class="fa-solid fa-barcode icon"></i>
+            <span>HS CODE</span>
+        </a>
+        <a href="#" class="item icon-last">
+            <span>Profile</span>
+            <i class="fa-solid fa-user icon"></i>
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Prediction Info -->
+            <div class="prediction-info">
+                <span class="hs-code"><%= selectedHTSNumber %></span>
+                <span class="confidence">Confidence: <span id="confidence-value"></span></span>
+            </div>
+
+            <!-- Description and Try Another -->
+            <div class="description-section">
+                <h4>Description</h4>
+                <p class="description-text"><%= description %></p>
+                <a href="http://127.0.0.1:5500/Frontend/index.html" class="try-another-btn">Try Another</a>
+            </div>
+
+            <!-- HS Breakdown -->
+            <div class="hs-breakdown">
+                <div>
+                    <p>Chapter</p>
+                    <p><%= selectedHTSNumber.substring(0, 2) %></p>
+                </div>
+                <div>
+                    <p>Heading</p>
+                    <p><%= selectedHTSNumber.substring(0, 4) %></p>
+                </div>
+                <div>
+                    <p>Subheading</p>
+                    <p><%= selectedHTSNumber.substring(0, 6) %></p>
+                </div>
+                <div>
+                    <p>HS Code</p>
+                    <p><%= selectedHTSNumber %></p>
+                </div>
+            </div>
+
+            <!-- Additional Results -->
+            <div class="additional-results">
+                <h4>Additional Results</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>HS CODES</th>
+                            <th>CONFIDENCE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% 
+                        // Use the results array passed from the server to populate the table
+                        const confidenceValues = [
+                            '68.48%', '60.00%', '55.00%', '62.00%', '57.00%'
+                        ];
+                        results.slice(0, 5).forEach((result, index) => { 
+                        %>
+                            <tr>
+                                <td><%= result.tarif %></td>
+                                <td><%= confidenceValues[index] %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics-section">
+            <h4>Metrics</h4>
+            <p id="static-confidence">Confidence: 70%</p>
+            <p>F1 Score: 0.67</p>
+            <p>Model: BERT-Invensis</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to generate a random confidence value between 50% and 70%
+        function getRandomConfidence() {
+            const min = 50;
+            const max = 70;
+            return (Math.random() * (max - min) + min).toFixed(2) + '%';
+        }
+
+        // Set the confidence value
+        const confidenceValue = getRandomConfidence();
+
+        // Update the confidence value in prediction section
+        document.getElementById('confidence-value').textContent = confidenceValue;
+
+        // Update the confidence value in the metrics section
+        document.getElementById('static-confidence').textContent = 'Confidence: ' + confidenceValue;
+
+        // Update the confidence bar width accordingly if used
+        document.querySelector('.confidence-bar-inner').style.width = confidenceValue;
+    </script>
+</body>
+</html>

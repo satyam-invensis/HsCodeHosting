@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 15px; /* Space between input fields */
+        }
+
+        .input-wrapper label {
+            display: block; /* Make label a block element to stack vertically */
+            margin-bottom: 5px; /* Space between label and input field */
+            font-size: 0.8em; /* Smaller font size for labels */
+            color: #333; /* Darker color for labels */
+            font-weight: 700;
+        }
+
+        .input-wrapper input {
+            padding: 8px;
+            padding-right: 40px; /* Add padding to the right to accommodate the icon */
+            border: 1px solid #ddd; /* Border color */
+            border-radius: 5px;
+            font-size: 0.7em; /* Smaller font size for input fields */
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #ffffff; /* Background color of input fields */
+            outline: none; /* Remove default outline */
+        }
+
+        .input-wrapper input:focus {
+            border-color: #7ebbfd; /* Border color on focus */
+        }
+
+        .input-wrapper .input-icon {
+            font-size: 16px; /* Decrease icon size */
+            color: #7ebbfd; /* Color of the icon */
+            position: absolute;
+            right: 10px; /* Position the icon to the right inside the input field */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px; /* Size of the icon */
+            height: 16px;
+            pointer-events: none; /* Prevent the icon from interfering with input field interactions */
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="image-container">
+            <img src="/LoginPage/LHS.jpg" alt="Decorative Image">
+        </div>
+        <div class="form-container">
+            <div id="header">
+                <h1>Sign Up</h1>
+                <p>Enter details to proceed</p>
+            </div>
+            <form onsubmit="signup(); return false;">
+                <div class="input-wrapper">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" >
+                    <i class="fas fa-user input-icon"></i>
+                </div>
+
+                <div class="input-wrapper">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter email address" >
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+
+                <div class="input-wrapper">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Create a username" >
+                    <i class="fas fa-user-tag input-icon"></i>
+                </div>
+
+                <div class="input-wrapper">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="**************************************" >
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <div class="input-wrapper">
+                    <label for="repeatPassword">Confirm Password</label>
+                    <input type="password" id="repeatPassword" placeholder="**************************************" >
+                    <i class="fas fa-lock input-icon"></i>
+                </div>
+
+                <label>
+                    <input type="checkbox" id="terms" >
+                    Agree to <a href="#" rel="noopener noreferrer">Terms And Privacy Policy</a>
+                </label>
+
+                <input type="submit" value="Join">
+                
+                <p id="message"></p>
+                <p class="login-link"><a href="login.html">Already a Member? Login here</a></p>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function signup() {
+            var fullName = document.getElementById('fullName').value;
+            var email = document.getElementById('email').value;
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var repeatPassword = document.getElementById('repeatPassword').value;
+
+            if (password !== repeatPassword) {
+                document.querySelector("#message").innerHTML = 'Passwords do not match, please try again';
+                return;
+            }
+
+            axios.post('http://localhost:3000/signup', {
+                fullName,
+                email,
+                username,
+                password,
+            })
+            .then(function (response) {
+                console.log(response.data);
+                document.querySelector("#message").innerHTML = response.data.message;
+            })
+            .catch(function (error) {
+                console.log(error.response.data);
+                document.querySelector("#message").innerHTML = error.response.data.message;
+            });
+        }
+    </script>
+</body>
+</html>
